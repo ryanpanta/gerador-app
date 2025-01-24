@@ -7,22 +7,44 @@ import {
     TouchableOpacity,
 } from "react-native";
 
+import { useStorage } from "../../hooks/useStorage";
+
+import * as Clipboard from "expo-clipboard";
+
 export function ModalPassword({ password, setOpenModal }) {
+    const { saveItem } = useStorage();
+
+    async function handleCopyPassword() {
+        await Clipboard.setStringAsync(password);
+        await saveItem("@pass", password);
+
+        alert("Senha copiada com sucesso.");
+        setOpenModal(false);
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.modal}>
                 <Text style={styles.title}>Senha gerada</Text>
-                <Pressable style={styles.passwordContainer}>
+                <Pressable
+                    style={styles.passwordContainer}
+                    onLongPress={handleCopyPassword}
+                >
                     <Text style={styles.password}>{password}</Text>
                 </Pressable>
 
                 <View style={styles.containerButton}>
-                    <TouchableOpacity style={styles.backButton} onPress={() => setOpenModal(false)}>
-                        <Text style={{color: '#f00'}}>Voltar</Text>
+                    <TouchableOpacity
+                        style={styles.backButton}
+                        onPress={() => setOpenModal(false)}
+                    >
+                        <Text style={{ color: "#f00" }}>Voltar</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.saveButton}>
-                        <Text style={{color: '#fff', fontWeight: 'bold'}}>Salvar Senha</Text>
+                        <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                            Salvar Senha
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -42,20 +64,22 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#fff",
-        padding: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 26,
         width: "80%",
         borderRadius: 8,
     },
 
     title: {
         textAlign: "center",
-        fontSize: 28,
+        fontSize: 20,
         fontWeight: "bold",
-        marginBottom: 12,
+        marginBottom: 24,
     },
 
     passwordContainer: {
         paddingVertical: 10,
+        paddingHorizontal: 10,
         borderRadius: 8,
         backgroundColor: "#eee",
         width: "90%",
