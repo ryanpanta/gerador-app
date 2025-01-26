@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function useStorage() {
     
-    async function getItem(key) {
+    async function getItems(key) {
         try {
             const passwords = await AsyncStorage.getItem(key);
 
@@ -16,7 +16,7 @@ export function useStorage() {
     
     async function saveItem(key, value) {
         try {
-            let passwords = await getItem(key)
+            let passwords = await getItems(key)
             passwords.push(value)
             await AsyncStorage.setItem(key, JSON.stringify(passwords))
         } 
@@ -27,9 +27,9 @@ export function useStorage() {
 
     async function removeItem(key, value) {
         try {
-            const passwords = await getItem(key)
+            const passwords = await getItems(key)
             const newPasswords = passwords.filter((password) => password !== value)
-            await AsyncStorage.setItem(key, newPasswords)
+            await AsyncStorage.setItem(key, JSON.stringify(newPasswords))
             return newPasswords;
         } 
         catch (error){
@@ -39,7 +39,7 @@ export function useStorage() {
     }
 
     return {
-        getItem, 
+        getItems, 
         saveItem, 
         removeItem,
     }

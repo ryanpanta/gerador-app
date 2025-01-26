@@ -14,11 +14,11 @@ import * as Clipboard from "expo-clipboard";
 export function ModalPassword({ password, setOpenModal }) {
     const { saveItem } = useStorage();
 
-    async function handleCopyPassword() {
+    async function handleSavePassword() {
         await Clipboard.setStringAsync(password);
         await saveItem("@pass", password);
 
-        alert("Senha copiada com sucesso.");
+        alert("Senha salva com sucesso.");
         setOpenModal(false);
     }
 
@@ -28,7 +28,7 @@ export function ModalPassword({ password, setOpenModal }) {
                 <Text style={styles.title}>Senha gerada</Text>
                 <Pressable
                     style={styles.passwordContainer}
-                    onLongPress={handleCopyPassword}
+                    onLongPress={handleSavePassword}
                 >
                     <Text style={styles.password}>{password}</Text>
                 </Pressable>
@@ -41,7 +41,7 @@ export function ModalPassword({ password, setOpenModal }) {
                         <Text style={{ color: "#f00" }}>Voltar</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.saveButton}>
+                    <TouchableOpacity style={styles.saveButton} onPress={handleSavePassword}>
                         <Text style={{ color: "#fff", fontWeight: "bold" }}>
                             Salvar Senha
                         </Text>

@@ -29,6 +29,8 @@ export function Home() {
         setOpenModal(true);
     }
 
+    
+
     return (
         <View style={styles.container}>
             <Image
